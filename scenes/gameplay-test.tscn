@@ -7,12 +7,16 @@
 
 [node name="BetterCam" parent="." instance=ExtResource( 1 )]
 
-[node name="Building" parent="." instance=ExtResource( 2 )]
-position = Vector2( -23, 231 )
+[node name="Building6" parent="." instance=ExtResource( 2 )]
+position = Vector2( -432, 235 )
 id = "basic_silo"
 
-[node name="Building6" parent="." instance=ExtResource( 2 )]
-position = Vector2( -261, 231 )
+[node name="Building8" parent="." instance=ExtResource( 2 )]
+position = Vector2( -445, 227 )
+id = "basic_silo"
+
+[node name="Building9" parent="." instance=ExtResource( 2 )]
+position = Vector2( -418, 244 )
 id = "basic_silo"
 
 [node name="Building5" parent="." instance=ExtResource( 2 )]
@@ -22,11 +26,11 @@ position = Vector2( 97, 235 )
 position = Vector2( -146, 230 )
 id = "solar_1"
 
-[node name="Building3" parent="." instance=ExtResource( 2 )]
-position = Vector2( -3, -231 )
-id = "basic_silo"
-team = 2
-
 [node name="Building2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 110, -231 )
+team = 1
+
+[node name="Building7" parent="." instance=ExtResource( 2 )]
+position = Vector2( 43, -124 )
+id = "flak_1"
 team = 1

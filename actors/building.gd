@@ -26,6 +26,7 @@ func damage(amount:float) -> void:
 
 func die() -> void:
   if !_dead:
+    _dead = true
     emit_signal("destroyed", data, team)
     queue_free()
 
@@ -53,6 +54,9 @@ func fire() -> void:
 
 func repair(amount:float) -> void:
   _current_health = clamp(_current_health + amount, 0, data.health)
+
+func targetable() -> bool:
+  return !_dead
 
 func _on_area2d_input_event(_viewport:Node, event:InputEvent, _shape_index:int):
   if event is InputEventMouseButton && event.is_pressed():
@@ -84,6 +88,20 @@ func _process(delta):
           for _building in _buildings:
             if _building.team != team && GDUtil.reference_safe(_building):
               _valid_targets.append(_building)
+
+          if _valid_targets.size() > 0:
+            _target = _valid_targets[0]
+
+      "defense":
+        if GDUtil.reference_safe(_target) && _target.targetable():
+          fire()
+        else:
+          var _projectiles = get_tree().get_nodes_in_group("projectiles")
+          var _valid_targets = []
+
+          for _projectile in _projectiles:
+            if _projectile.team != team && GDUtil.reference_safe(_projectile):
+              _valid_targets.append(_projectile)
 
           if _valid_targets.size() > 0:
             _target = _valid_targets[0]

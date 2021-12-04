@@ -232,13 +232,26 @@
 							"tech": "tech_1"
 						}
 					],
-					"clips": [],
+					"clips": [
+						{
+							"projectile": "flak",
+							"interval": 0.15
+						},
+						{
+							"projectile": "flak",
+							"interval": 0.15
+						},
+						{
+							"projectile": "flak",
+							"interval": 0
+						}
+					],
 					"techs": [],
 					"cost_metal": 30,
 					"cost_energy": 50,
 					"resource_rate_energy": 0,
 					"resource_rate_metal": 0,
-					"reload_time": 0,
+					"reload_time": 0.5,
 					"battery": 0,
 					"recharge_rate": 0,
 					"type": "defense"
@@ -303,6 +316,11 @@
 					"name": "id"
 				},
 				{
+					"typeStr": "1",
+					"name": "types",
+					"display": null
+				},
+				{
 					"typeStr": "3",
 					"name": "health",
 					"display": null
@@ -310,6 +328,11 @@
 				{
 					"typeStr": "3",
 					"name": "damage",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "radius",
 					"display": null
 				},
 				{
@@ -323,7 +346,17 @@
 					"id": "rocket",
 					"health": 5,
 					"damage": 2,
-					"speed": 500
+					"speed": 500,
+					"types": "rocket",
+					"radius": 1
+				},
+				{
+					"id": "flak",
+					"health": 9999,
+					"damage": 3,
+					"speed": 1500,
+					"types": "defense",
+					"radius": 50
 				}
 			],
 			"separators": [],

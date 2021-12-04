@@ -1,5 +1,6 @@
 extends Node2D
 
+signal destroyed(data, team)
 signal resource_generated(resource, amount, team)
 signal selected(building)
 
@@ -16,11 +17,17 @@ var _clip_index:int
 var _clip_interval:float
 var _current_battery:float
 var _current_health:float
+var _dead:bool
 var _target:Node2D
 var _time_to_reloaded:float
 
 func damage(amount:float) -> void:
   _current_health = clamp(_current_health - amount, 0, data.health)
+
+func die() -> void:
+  if !_dead:
+    emit_signal("destroyed", data, team)
+    queue_free()
 
 func fire() -> void:
   if _time_to_reloaded <= 0:
@@ -53,36 +60,39 @@ func _on_area2d_input_event(_viewport:Node, event:InputEvent, _shape_index:int):
     print("selected")
 
 func _process(delta):
-  _clip_interval = clamp(_clip_interval - delta, 0, _clip_interval)
-  _current_battery = clamp(_current_battery + (data.recharge_rate * delta), 0, data.battery)
-  _time_to_reloaded = clamp(_time_to_reloaded - delta, 0, data.reload_time)
+  if !_dead:
+    _clip_interval = clamp(_clip_interval - delta, 0, _clip_interval)
+    _current_battery = clamp(_current_battery + (data.recharge_rate * delta), 0, data.battery)
+    _time_to_reloaded = clamp(_time_to_reloaded - delta, 0, data.reload_time)
 
-  match data.type:
-    "resource":
-      if data.resource_rate_energy > 0:
-        emit_signal("resource_generated", "energy", delta * data.resource_rate_energy, team)
-      if data.resource_rate_metal > 0:
-        emit_signal("resource_generated", "metal", delta * data.resource_rate_metal, team)
+    match data.type:
+      "resource":
+        if data.resource_rate_energy > 0:
+          emit_signal("resource_generated", "energy", delta * data.resource_rate_energy, team)
+          Store.gain_resource("energy", delta * data.resource_rate_energy, team)
+        if data.resource_rate_metal > 0:
+          emit_signal("resource_generated", "metal", delta * data.resource_rate_metal, team)
+          Store.gain_resource("metal", delta * data.resource_rate_metal, team)
 
-    "silo":
-      if GDUtil.reference_safe(_target):
-        fire()
-      else:
-        var _buildings = get_tree().get_nodes_in_group("buildings")
-        var _valid_targets = []
+      "silo":
+        if GDUtil.reference_safe(_target):
+          fire()
+        else:
+          var _buildings = get_tree().get_nodes_in_group("buildings")
+          var _valid_targets = []
 
-        for _building in _buildings:
-          if _building.team != team && GDUtil.reference_safe(_building):
-            _valid_targets.append(_building)
+          for _building in _buildings:
+            if _building.team != team && GDUtil.reference_safe(_building):
+              _valid_targets.append(_building)
 
-        if _valid_targets.size() > 0:
-          _target = _valid_targets[0]
+          if _valid_targets.size() > 0:
+            _target = _valid_targets[0]
 
-    _:
-      pass
+      _:
+        pass
 
-  if _current_health <= 0:
-    queue_free()
+    if _current_health <= 0:
+      die()
 
 func _ready():
   _area2d.connect("input_event", self, "_on_area2d_input_event")
@@ -91,6 +101,7 @@ func _ready():
 
   _current_battery = 0
   _current_health = data.health
+  _dead = false
   _time_to_reloaded = data.reload_time
 
   add_to_group(data.type)

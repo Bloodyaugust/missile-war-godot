@@ -345,7 +345,7 @@
 				{
 					"id": "rocket",
 					"health": 5,
-					"damage": 2,
+					"damage": 20,
 					"speed": 500,
 					"types": "rocket",
 					"radius": 1

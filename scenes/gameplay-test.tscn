@@ -19,6 +19,10 @@ id = "basic_silo"
 position = Vector2( -418, 244 )
 id = "basic_silo"
 
+[node name="Building10" parent="." instance=ExtResource( 2 )]
+position = Vector2( 428, 239 )
+id = "basic_silo"
+
 [node name="Building5" parent="." instance=ExtResource( 2 )]
 position = Vector2( 97, 235 )
 

@@ -25,15 +25,19 @@ func die() -> void:
       var _area_parent:Node2D = _area.get_owner()
       # print("projectile found overlapping area: " + _area_parent.name + "(" + _area_parent.id + ")")
       
-      if "defense" in data.types:
-        if _area_parent.is_in_group("projectiles"):
-          _damage_targets.append(_area_parent)
+      match data.types:
+        "defense":
+          if _area_parent.is_in_group("projectiles"):
+            _damage_targets.append(_area_parent)
+        _:
+          if _area_parent.is_in_group("buildings"):
+            _damage_targets.append(_area_parent)
 
     # print(id + "(" + name + ") damaging targets: " + str(_damage_targets))
     for _target in _damage_targets:
-      var _damage_done:float = data.damage * lerp(1, 0.1, global_position.distance_to(_target.global_position) / data.radius)
+      var _damage_done:float = data.damage * lerp(1, 0.1, clamp(global_position.distance_to(_target.global_position), 0, data.radius) / data.radius)
 
-      # print("damage from " + id + "(" + name + "): " + str(_damage_done))
+      print("damage from " + id + "(" + name + "): " + str(_damage_done))
       _target.damage(_damage_done)
 
     _dead = true
@@ -68,6 +72,3 @@ func _ready():
   _area2d.get_node("CollisionShape2D").shape.radius = data.radius
   _current_health = data.health
   _dead = false
-
-func _time_scale_reset() -> void:
-  Engine.time_scale = 1

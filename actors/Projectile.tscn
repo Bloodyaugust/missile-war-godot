@@ -5,7 +5,7 @@
 
 [sub_resource type="CircleShape2D" id=1]
 resource_local_to_scene = true
-radius = 50.0
+radius = 0.01
 
 [node name="Projectile" type="Node2D" groups=["projectiles"]]
 script = ExtResource( 1 )

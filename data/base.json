@@ -48,6 +48,11 @@
 				},
 				{
 					"typeStr": "4",
+					"name": "range",
+					"display": null
+				},
+				{
+					"typeStr": "4",
 					"name": "recharge_rate",
 					"display": null
 				},
@@ -85,7 +90,8 @@
 					"reload_time": 0,
 					"battery": 0,
 					"recharge_rate": 0,
-					"type": "command"
+					"type": "command",
+					"range": 0
 				},
 				{
 					"id": "solar_1",
@@ -100,7 +106,8 @@
 					"reload_time": 0,
 					"battery": 0,
 					"recharge_rate": 0,
-					"type": "resource"
+					"type": "resource",
+					"range": 0
 				},
 				{
 					"id": "miner_1",
@@ -115,7 +122,8 @@
 					"reload_time": 0,
 					"battery": 0,
 					"recharge_rate": 0,
-					"type": "resource"
+					"type": "resource",
+					"range": 0
 				},
 				{
 					"id": "basic_silo",
@@ -139,7 +147,8 @@
 					"reload_time": 5,
 					"battery": 0,
 					"recharge_rate": 0,
-					"type": "silo"
+					"type": "silo",
+					"range": 1000
 				},
 				{
 					"id": "basic_shield",
@@ -158,7 +167,8 @@
 					"reload_time": 0,
 					"battery": 50,
 					"recharge_rate": 5,
-					"type": "shield"
+					"type": "shield",
+					"range": 0
 				},
 				{
 					"id": "basic_tech",
@@ -184,7 +194,8 @@
 					"reload_time": 0,
 					"battery": 0,
 					"recharge_rate": 0,
-					"type": "tech"
+					"type": "tech",
+					"range": 0
 				},
 				{
 					"id": "solar_2",
@@ -203,7 +214,8 @@
 					"reload_time": 0,
 					"battery": 0,
 					"recharge_rate": 0,
-					"type": "resource"
+					"type": "resource",
+					"range": 0
 				},
 				{
 					"id": "miner_2",
@@ -222,7 +234,8 @@
 					"reload_time": 0,
 					"battery": 0,
 					"recharge_rate": 0,
-					"type": "resource"
+					"type": "resource",
+					"range": 0
 				},
 				{
 					"id": "flak_1",
@@ -254,7 +267,8 @@
 					"reload_time": 0.5,
 					"battery": 0,
 					"recharge_rate": 0,
-					"type": "defense"
+					"type": "defense",
+					"range": 200
 				}
 			],
 			"separators": [],
@@ -353,10 +367,10 @@
 				{
 					"id": "flak",
 					"health": 9999,
-					"damage": 3,
+					"damage": 100,
 					"speed": 1500,
 					"types": "defense",
-					"radius": 50
+					"radius": 300
 				}
 			],
 			"separators": [],

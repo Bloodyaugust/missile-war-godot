@@ -9,8 +9,9 @@ export var team:int
 
 onready var data:Dictionary = Castledb.get_entry("buildings", id)
 
-onready var _area2d:Area2D = $"./Area2D"
+onready var _collider:Area2D = $"./Collider"
 onready var _building_sprite:Sprite = $"./Sprite"
+onready var _range_area2d:Area2D = $"./RangeArea2D"
 onready var _selection_indicator:ColorRect = $"./SelectionIndicator"
 
 var _clip_index:int
@@ -33,7 +34,6 @@ func die() -> void:
 func fire() -> void:
   if _time_to_reloaded <= 0:
     if _clip_interval <= 0:
-      # Instance our projectile, pass it the target
       var _new_projectile = load("res://actors/Projectile.tscn").instance()
 
       _new_projectile.id = data.clips[_clip_index].projectile
@@ -58,7 +58,26 @@ func repair(amount:float) -> void:
 func targetable() -> bool:
   return !_dead
 
-func _on_area2d_input_event(_viewport:Node, event:InputEvent, _shape_index:int):
+func _find_target() -> void:
+  var _overlapping_areas:Array = _range_area2d.get_overlapping_areas()
+
+  for _area in _overlapping_areas:
+    var _potential_target = _area.get_owner()
+
+    match data.type:
+      "defense":
+        if _potential_target.team != team && _potential_target.is_in_group("projectiles") && GDUtil.reference_safe(_potential_target):
+          _target = _potential_target
+          return
+
+      "silo":
+        if _potential_target.team != team && _potential_target.is_in_group("buildings") && GDUtil.reference_safe(_potential_target):
+          _target = _potential_target
+          return
+
+  return
+
+func _on_collider_input_event(_viewport:Node, event:InputEvent, _shape_index:int):
   if event is InputEventMouseButton && event.is_pressed():
     emit_signal("selected", self)
     print("selected")
@@ -79,32 +98,18 @@ func _process(delta):
           Store.gain_resource("metal", delta * data.resource_rate_metal, team)
 
       "silo":
-        if GDUtil.reference_safe(_target):
+        if GDUtil.reference_safe(_target) && _target.targetable() && _target.global_position.distance_to(global_position) <= data.range:
           fire()
+          print("silo has target, firing")
         else:
-          var _buildings = get_tree().get_nodes_in_group("buildings")
-          var _valid_targets = []
-
-          for _building in _buildings:
-            if _building.team != team && GDUtil.reference_safe(_building):
-              _valid_targets.append(_building)
-
-          if _valid_targets.size() > 0:
-            _target = _valid_targets[0]
+          print("silo has no target, finding target")
+          _find_target()
 
       "defense":
-        if GDUtil.reference_safe(_target) && _target.targetable():
+        if GDUtil.reference_safe(_target) && _target.targetable() && _target.global_position.distance_to(global_position) <= data.range:
           fire()
         else:
-          var _projectiles = get_tree().get_nodes_in_group("projectiles")
-          var _valid_targets = []
-
-          for _projectile in _projectiles:
-            if _projectile.team != team && GDUtil.reference_safe(_projectile):
-              _valid_targets.append(_projectile)
-
-          if _valid_targets.size() > 0:
-            _target = _valid_targets[0]
+          _find_target()
 
       _:
         pass
@@ -113,13 +118,21 @@ func _process(delta):
       die()
 
 func _ready():
-  _area2d.connect("input_event", self, "_on_area2d_input_event")
+  _collider.connect("input_event", self, "_on_collider_input_event")
 
   _building_sprite.texture = load("res://sprites/buildings/" + id + ".png")
 
   _current_battery = 0
   _current_health = data.health
   _dead = false
+  if data.range > 0:
+    var _range_shape:CircleShape2D = CircleShape2D.new()
+
+    _range_shape.radius = data.range
+
+    _range_area2d.shape_owner_clear_shapes(0)
+    _range_area2d.shape_owner_add_shape(0, _range_shape)
+
   _time_to_reloaded = data.reload_time
 
   add_to_group(data.type)

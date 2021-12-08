@@ -69,6 +69,11 @@ func _process(_delta):
 func _ready():
   _projectile_sprite.texture = load("res://sprites/projectiles/" + id + ".png")
 
-  _area2d.get_node("CollisionShape2D").shape.radius = data.radius
+  var _range_shape:CircleShape2D = CircleShape2D.new()
+
+  _range_shape.radius = data.radius
+
+  _area2d.shape_owner_clear_shapes(0)
+  _area2d.shape_owner_add_shape(0, _range_shape)
   _current_health = data.health
   _dead = false

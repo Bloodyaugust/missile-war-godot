@@ -6,6 +6,7 @@ var persistent_store:PersistentStore
 var state: Dictionary = {
   "client_view": "",
   "game": "",
+  "selection": null,
  }
 
 func add_player(team:int) -> void:
@@ -50,6 +51,7 @@ func set_state(state_key: String, new_state) -> void:
 func _initialize():
   set_state("client_view", ClientConstants.CLIENT_VIEW_SPLASH)
   set_state("game", GameConstants.GAME_OVER)
+  set_state("selection", null)
   add_player(0)
   add_player(1)
 

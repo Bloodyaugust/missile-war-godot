@@ -37,7 +37,7 @@ func die() -> void:
     for _target in _damage_targets:
       var _damage_done:float = data.damage * lerp(1, 0.1, clamp(global_position.distance_to(_target.global_position), 0, data.radius) / data.radius)
 
-      print("damage from " + id + "(" + name + "): " + str(_damage_done))
+      # print("damage from " + id + "(" + name + "): " + str(_damage_done))
       _target.damage(_damage_done)
 
     _dead = true

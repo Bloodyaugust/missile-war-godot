@@ -2,7 +2,6 @@ extends Node2D
 
 signal destroyed(data, team)
 signal resource_generated(resource, amount, team)
-signal selected(building)
 
 export var id:String
 export var team:int
@@ -79,8 +78,7 @@ func _find_target() -> void:
 
 func _on_collider_input_event(_viewport:Node, event:InputEvent, _shape_index:int):
   if event is InputEventMouseButton && event.is_pressed():
-    emit_signal("selected", self)
-    print("selected")
+    Store.set_state("selection", self)
 
 func _process(delta):
   if !_dead:
@@ -100,9 +98,7 @@ func _process(delta):
       "silo":
         if GDUtil.reference_safe(_target) && _target.targetable() && _target.global_position.distance_to(global_position) <= data.range:
           fire()
-          print("silo has target, firing")
         else:
-          print("silo has no target, finding target")
           _find_target()
 
       "defense":

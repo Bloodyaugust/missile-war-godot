@@ -367,10 +367,10 @@
 				{
 					"id": "flak",
 					"health": 9999,
-					"damage": 100,
+					"damage": 2,
 					"speed": 1500,
 					"types": "defense",
-					"radius": 300
+					"radius": 100
 				}
 			],
 			"separators": [],

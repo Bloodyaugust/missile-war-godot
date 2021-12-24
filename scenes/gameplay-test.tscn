@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://lib/BetterCam.tscn" type="PackedScene" id=1]
+[ext_resource path="res://views/GameHUD.tscn" type="PackedScene" id=2]
 [ext_resource path="res://actors/Building.tscn" type="PackedScene" id=4]
 
 [node name="Node2D" type="Node2D"]
@@ -26,3 +27,8 @@ team = 1
 position = Vector2( 43, -124 )
 id = "flak_1"
 team = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameHUD" parent="CanvasLayer" instance=ExtResource( 2 )]
+margin_top = -198.0

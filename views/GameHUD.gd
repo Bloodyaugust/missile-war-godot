@@ -1,5 +1,7 @@
 extends Control
 
+const _building_card:PackedScene = preload("res://views/components/BuildingCard.tscn")
+
 onready var _building_screen:Control = find_node("Building")
 onready var _construction_screen:Control = find_node("Construction")
 
@@ -13,6 +15,9 @@ onready var _status_health:Label = _status_container.find_node("Health")
 onready var _status_battery:Label = _status_container.find_node("Battery")
 onready var _status_energy:Label = _status_container.find_node("Energy")
 onready var _status_metal:Label = _status_container.find_node("Metal")
+
+onready var _resource_buildings:GridContainer = _construction_screen.find_node("ResourceBuildings")
+onready var _misc_buildings:GridContainer = _construction_screen.find_node("MiscBuildings")
 
 func _input(event):
   if event.is_action_pressed("ui_cancel") && GDUtil.reference_safe(Store.state.selection):
@@ -44,7 +49,24 @@ func _process(_delta):
       Store.set_state("selection", null)
 
 func _ready():
+  var _building_entries:Array = Castledb.get_entries("buildings")
+
   Store.connect("state_changed", self, "_on_state_changed")
+
+  GDUtil.queue_free_children(_resource_buildings)
+
+  for _building in _building_entries:
+    var _new_building_card:Control = _building_card.instance()
+
+    _new_building_card.data = _building
+
+    match _building.type:
+      "resource":
+        _resource_buildings.add_child(_new_building_card)
+      
+      _:
+        _misc_buildings.add_child(_new_building_card)
+
 
 func _update_building_screen() -> void:
   var _building:Node2D = Store.state.selection

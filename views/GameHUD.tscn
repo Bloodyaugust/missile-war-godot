@@ -1,10 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://resources/themes/kenney/kenney.tres" type="Theme" id=1]
 [ext_resource path="res://sprites/buildings/command.png" type="Texture" id=2]
 [ext_resource path="res://sprites/buildings/basic_tech.png" type="Texture" id=3]
-[ext_resource path="res://sprites/buildings/solar_1.png" type="Texture" id=4]
-[ext_resource path="res://sprites/buildings/miner_1.png" type="Texture" id=5]
 [ext_resource path="res://views/GameHUD.gd" type="Script" id=6]
 
 [node name="GameHUD" type="PanelContainer"]
@@ -24,11 +22,12 @@ __meta__ = {
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 1017.0
-margin_bottom = 145.0
+margin_bottom = 183.0
 
 [node name="Building" type="HBoxContainer" parent="MarginContainer"]
+visible = false
 margin_right = 1010.0
-margin_bottom = 138.0
+margin_bottom = 176.0
 
 [node name="Info" type="CenterContainer" parent="MarginContainer/Building"]
 margin_right = 334.0
@@ -182,9 +181,8 @@ texture = ExtResource( 3 )
 stretch_mode = 4
 
 [node name="Construction" type="TabContainer" parent="MarginContainer"]
-visible = false
 margin_right = 1010.0
-margin_bottom = 138.0
+margin_bottom = 176.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -197,110 +195,17 @@ margin_top = 42.0
 margin_right = -4.0
 margin_bottom = -4.0
 
-[node name="Resource" type="GridContainer" parent="MarginContainer/Construction/Resource"]
-margin_left = 25.0
-margin_right = 977.0
-margin_bottom = 138.0
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Construction/Resource"]
+margin_left = 501.0
+margin_right = 501.0
+margin_bottom = 130.0
+rect_min_size = Vector2( 0, 130 )
+scroll_horizontal_enabled = false
+
+[node name="ResourceBuildings" type="GridContainer" parent="MarginContainer/Construction/Resource/ScrollContainer"]
 custom_constants/vseparation = 10
 custom_constants/hseparation = 10
-columns = 13
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_right = 64.0
-margin_bottom = 64.0
-texture = ExtResource( 5 )
-stretch_mode = 4
-
-[node name="TextureRect2" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 74.0
-margin_right = 138.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect3" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 148.0
-margin_right = 212.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect4" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 222.0
-margin_right = 286.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect5" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 296.0
-margin_right = 360.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect6" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 370.0
-margin_right = 434.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect7" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 444.0
-margin_right = 508.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect8" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 518.0
-margin_right = 582.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect9" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 592.0
-margin_right = 656.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect10" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 666.0
-margin_right = 730.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect11" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 740.0
-margin_right = 804.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect12" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 814.0
-margin_right = 878.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect13" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_left = 888.0
-margin_right = 952.0
-margin_bottom = 64.0
-texture = ExtResource( 4 )
-stretch_mode = 4
-
-[node name="TextureRect14" type="TextureRect" parent="MarginContainer/Construction/Resource/Resource"]
-margin_top = 74.0
-margin_right = 64.0
-margin_bottom = 138.0
-texture = ExtResource( 4 )
-stretch_mode = 4
+columns = 4
 
 [node name="Silo" type="GridContainer" parent="MarginContainer/Construction"]
 visible = false
@@ -328,3 +233,25 @@ margin_left = 4.0
 margin_top = 42.0
 margin_right = -4.0
 margin_bottom = -4.0
+
+[node name="Misc" type="CenterContainer" parent="MarginContainer/Construction"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 505.0
+margin_top = 42.0
+margin_right = 497.0
+margin_bottom = -4.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Construction/Misc"]
+margin_left = 501.0
+margin_top = 65.0
+margin_right = 501.0
+margin_bottom = 65.0
+rect_min_size = Vector2( 0, 130 )
+scroll_horizontal_enabled = false
+
+[node name="MiscBuildings" type="GridContainer" parent="MarginContainer/Construction/Misc/ScrollContainer"]
+custom_constants/vseparation = 10
+custom_constants/hseparation = 10
+columns = 4

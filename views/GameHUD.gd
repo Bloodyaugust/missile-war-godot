@@ -20,14 +20,19 @@ onready var _resource_buildings:GridContainer = _construction_screen.find_node("
 onready var _misc_buildings:GridContainer = _construction_screen.find_node("MiscBuildings")
 
 func _input(event):
-  if event.is_action_pressed("ui_cancel") && GDUtil.reference_safe(Store.state.selection):
-    Store.set_state("selection", null)
+  if event.is_action_pressed("ui_cancel"):
+    if GDUtil.reference_safe(Store.state.selection):
+      Store.set_state("selection", null)
+
+    if GDUtil.reference_safe(Store.state.building_card_selected):
+      Store.set_state("building_card_selected", null)
 
 func _on_state_changed(state_key: String, substate):
   match state_key:
     "selection":
       if GDUtil.reference_safe(substate):
         _show_building_screen()
+        Store.set_state("building_card_selected", null)
       else:
         _show_construction_screen()
 

@@ -7,6 +7,7 @@ var state: Dictionary = {
   "client_view": "",
   "game": "",
   "selection": null,
+  "building_card_selected": null,
  }
 
 func add_player(team:int) -> void:

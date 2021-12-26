@@ -4,6 +4,7 @@ signal state_changed(state_key, substate)
 
 var persistent_store:PersistentStore
 var state: Dictionary = {
+  "active_team": 0,
   "client_view": "",
   "game": "",
   "selection": null,

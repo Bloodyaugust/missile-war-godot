@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://resources/themes/kenney/kenney.tres" type="Theme" id=1]
+[ext_resource path="res://views/Debug.gd" type="Script" id=2]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+theme = ExtResource( 1 )
+custom_constants/separation = 10
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Team0" type="Button" parent="HBoxContainer"]
+margin_right = 84.6378
+margin_bottom = 42.7363
+text = "Team 0"
+
+[node name="Team1" type="Button" parent="HBoxContainer"]
+margin_left = 94.0
+margin_right = 174.638
+margin_bottom = 42.7363
+text = "Team 1"
+
+[node name="ActiveTeam" type="Label" parent="HBoxContainer"]
+margin_left = 184.0
+margin_top = 9.0
+margin_right = 322.0
+margin_bottom = 33.0
+text = "Active Team: 0"

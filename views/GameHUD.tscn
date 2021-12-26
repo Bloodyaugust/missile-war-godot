@@ -207,7 +207,7 @@ custom_constants/vseparation = 10
 custom_constants/hseparation = 10
 columns = 4
 
-[node name="Silo" type="GridContainer" parent="MarginContainer/Construction"]
+[node name="Silo" type="CenterContainer" parent="MarginContainer/Construction"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -216,7 +216,19 @@ margin_top = 42.0
 margin_right = -4.0
 margin_bottom = -4.0
 
-[node name="Tech" type="GridContainer" parent="MarginContainer/Construction"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Construction/Silo"]
+margin_left = 501.0
+margin_right = 501.0
+margin_bottom = 130.0
+rect_min_size = Vector2( 0, 130 )
+scroll_horizontal_enabled = false
+
+[node name="SiloBuildings" type="GridContainer" parent="MarginContainer/Construction/Silo/ScrollContainer"]
+custom_constants/vseparation = 10
+custom_constants/hseparation = 10
+columns = 4
+
+[node name="Tech" type="CenterContainer" parent="MarginContainer/Construction"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -225,7 +237,19 @@ margin_top = 42.0
 margin_right = -4.0
 margin_bottom = -4.0
 
-[node name="Defense" type="GridContainer" parent="MarginContainer/Construction"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Construction/Tech"]
+margin_left = 501.0
+margin_right = 501.0
+margin_bottom = 130.0
+rect_min_size = Vector2( 0, 130 )
+scroll_horizontal_enabled = false
+
+[node name="TechBuildings" type="GridContainer" parent="MarginContainer/Construction/Tech/ScrollContainer"]
+custom_constants/vseparation = 10
+custom_constants/hseparation = 10
+columns = 4
+
+[node name="Defense" type="CenterContainer" parent="MarginContainer/Construction"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -233,6 +257,18 @@ margin_left = 4.0
 margin_top = 42.0
 margin_right = -4.0
 margin_bottom = -4.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Construction/Defense"]
+margin_left = 501.0
+margin_right = 501.0
+margin_bottom = 130.0
+rect_min_size = Vector2( 0, 130 )
+scroll_horizontal_enabled = false
+
+[node name="DefenseBuildings" type="GridContainer" parent="MarginContainer/Construction/Defense/ScrollContainer"]
+custom_constants/vseparation = 10
+custom_constants/hseparation = 10
+columns = 4
 
 [node name="Misc" type="CenterContainer" parent="MarginContainer/Construction"]
 visible = false
@@ -245,9 +281,8 @@ margin_bottom = -4.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Construction/Misc"]
 margin_left = 501.0
-margin_top = 65.0
 margin_right = 501.0
-margin_bottom = 65.0
+margin_bottom = 130.0
 rect_min_size = Vector2( 0, 130 )
 scroll_horizontal_enabled = false
 

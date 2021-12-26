@@ -16,7 +16,10 @@ onready var _status_battery:Label = _status_container.find_node("Battery")
 onready var _status_energy:Label = _status_container.find_node("Energy")
 onready var _status_metal:Label = _status_container.find_node("Metal")
 
+onready var _defense_buildings:GridContainer = _construction_screen.find_node("DefenseBuildings")
 onready var _resource_buildings:GridContainer = _construction_screen.find_node("ResourceBuildings")
+onready var _silo_buildings:GridContainer = _construction_screen.find_node("SiloBuildings")
+onready var _tech_buildings:GridContainer = _construction_screen.find_node("TechBuildings")
 onready var _misc_buildings:GridContainer = _construction_screen.find_node("MiscBuildings")
 
 func _input(event):
@@ -66,8 +69,17 @@ func _ready():
     _new_building_card.data = _building
 
     match _building.type:
+      "defense":
+        _defense_buildings.add_child(_new_building_card)
+
       "resource":
         _resource_buildings.add_child(_new_building_card)
+
+      "silo":
+        _silo_buildings.add_child(_new_building_card)
+
+      "tech":
+        _tech_buildings.add_child(_new_building_card)
       
       _:
         _misc_buildings.add_child(_new_building_card)

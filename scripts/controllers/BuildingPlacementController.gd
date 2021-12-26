@@ -17,7 +17,7 @@ func _input(event):
   if GDUtil.reference_safe(Store.state.building_card_selected) && event.is_action_pressed("building_place"):
     var _new_building:Node2D = _building_scene.instance()
 
-    _new_building.team = 0
+    _new_building.team = Store.state.active_team
     _new_building.id = Store.state.building_card_selected.data.id
     _new_building.global_position = _building_sprite.global_position
 

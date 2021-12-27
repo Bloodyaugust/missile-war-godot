@@ -106,15 +106,14 @@ func _process(delta):
     _current_battery = clamp(_current_battery + (data.recharge_rate * delta), 0, data.battery)
     _time_to_reloaded = clamp(_time_to_reloaded - delta, 0, data.reload_time)
 
-    match data.type:
-      "resource":
-        if data.resource_rate_energy > 0:
-          emit_signal("resource_generated", "energy", delta * data.resource_rate_energy, team)
-          Store.gain_resource("energy", delta * data.resource_rate_energy, team)
-        if data.resource_rate_metal > 0:
-          emit_signal("resource_generated", "metal", delta * data.resource_rate_metal, team)
-          Store.gain_resource("metal", delta * data.resource_rate_metal, team)
+    if data.resource_rate_energy > 0:
+      emit_signal("resource_generated", "energy", delta * data.resource_rate_energy, team)
+      Store.gain_resource("energy", delta * data.resource_rate_energy, team)
+    if data.resource_rate_metal > 0:
+      emit_signal("resource_generated", "metal", delta * data.resource_rate_metal, team)
+      Store.gain_resource("metal", delta * data.resource_rate_metal, team)
 
+    match data.type:
       "silo":
         if GDUtil.reference_safe(_target) && _target.targetable() && _target.global_position.distance_to(global_position) <= data.range:
           fire()

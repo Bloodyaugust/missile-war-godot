@@ -101,12 +101,12 @@ func _update_building_screen() -> void:
 
   if _building.data.resource_rate_energy > 0:
     _status_energy.visible = true
-    _status_energy.text = "Energy: " + str(int(round(_building.data.resource_rate_energy))) + "/min"
+    _status_energy.text = "Energy: " + str(stepify(_building.data.resource_rate_energy, 0.1)) + "/min"
   else:
     _status_energy.visible = false
 
   if _building.data.resource_rate_metal > 0:
     _status_metal.visible = true
-    _status_metal.text = "Metal: " + str(int(round(_building.data.resource_rate_metal))) + "/min"
+    _status_metal.text = "Metal: " + str(stepify(_building.data.resource_rate_metal, 0.1)) + "/min"
   else:
     _status_metal.visible = false

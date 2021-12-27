@@ -9,6 +9,8 @@ onready var _info_container:Control = find_node("Info")
 onready var _info_description:Label = _info_container.find_node("Description")
 onready var _info_icon:TextureRect = _info_container.find_node("Icon")
 onready var _info_name:Label = _info_container.find_node("Name")
+onready var _info_health_progress:ProgressBar = _info_container.find_node("HealthProgress")
+onready var _info_reload_progress:ProgressBar = _info_container.find_node("ReloadProgress")
 
 onready var _status_container:Control = find_node("Status")
 onready var _status_health:Label = _status_container.find_node("Health")
@@ -91,7 +93,14 @@ func _update_building_screen() -> void:
   _info_description.text = _building.data.type
   _info_icon.texture = load("res://sprites/buildings/" + _building.data.id + ".png")
   _info_name.text = _building.data.id
+  _info_health_progress.value = clamp(lerp(0, 100, _building._current_health / _building.data.health), 0, 100)
   _status_health.text = "Health: " + str(int(round(_building._current_health))) + "/" + str(int(round(_building.data.health)))
+
+  if _building.data.type == "silo":
+    _info_reload_progress.visible = true
+    _info_reload_progress.value = clamp(lerp(100, 0, _building._time_to_reloaded / _building.data.reload_time), 0, 100)
+  else:
+    _info_reload_progress.visible = false
 
   if _building.data.battery > 0:
     _status_battery.visible = true

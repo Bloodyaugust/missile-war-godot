@@ -6,6 +6,7 @@ var persistent_store:PersistentStore
 var state: Dictionary = {
   "active_team": 0,
   "client_view": "",
+  "debug": false,
   "game": "",
   "selection": null,
   "building_card_selected": null,

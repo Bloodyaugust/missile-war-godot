@@ -5,7 +5,7 @@ export var team:int
 
 onready var data:Dictionary = Castledb.get_entry("projectiles", id)
 
-onready var _area2d:Area2D = $"./Area2D"
+onready var _tree = get_tree()
 onready var _projectile_sprite:Sprite = $"./Sprite"
 
 var target:Node2D
@@ -18,26 +18,18 @@ func damage(amount:float) -> void:
 
 func die() -> void:
   if !_dead:
-    var _overlapping_areas:Array = _area2d.get_overlapping_areas()
+    var _targetables:Array = _tree.get_nodes_in_group("targetables")
     var _damage_targets:Array = []
 
-    for _area in _overlapping_areas:
-      var _area_parent:Node2D = _area.get_owner()
-      # print("projectile found overlapping area: " + _area_parent.name + "(" + _area_parent.id + ")")
-      
-      match data.types:
-        "defense":
-          if _area_parent.is_in_group("projectiles"):
-            _damage_targets.append(_area_parent)
-        _:
-          if _area_parent.is_in_group("buildings"):
-            _damage_targets.append(_area_parent)
+    for _target in _targetables:
+      if _target != self && GDUtil.reference_safe(_target) && _target.global_position.distance_to(global_position) <= data.radius:
+        _damage_targets.append(_target)
 
     # print(id + "(" + name + ") damaging targets: " + str(_damage_targets))
     for _target in _damage_targets:
       var _damage_done:float = data.damage * lerp(1, 0.1, clamp(global_position.distance_to(_target.global_position), 0, data.radius) / data.radius)
 
-      # print("damage from " + id + "(" + name + "): " + str(_damage_done))
+      # print("damage from " + id + "(" + name + ") to (" + _target.name + ":" + _target.data.id + "): " + str(_damage_done))
       _target.damage(_damage_done)
 
     _dead = true
@@ -46,24 +38,26 @@ func die() -> void:
 func targetable() -> bool:
   return !_dead
 
+func _draw():
+  if Store.state.debug:
+    draw_arc(Vector2.ZERO, data.radius, 0, 2 * PI, 12, Color.red)
+
 func _physics_process(delta):
+  update()
   if !_dead:
     if GDUtil.reference_safe(target) && target.targetable():
       look_at(target.global_position)
       global_position = global_position.move_toward(target.global_position, delta * data.speed)
 
+      if _current_health <= 0:
+        # print("projectile " + name + "(" + id + ")" + " died from health loss")
+        die()
+
       if target.global_position.distance_to(global_position) <= 1:
         # print("projectile " + name + "(" + id + ")" + " died from proximity to " + target.name + "(" + target.id + ")")
         die()
 
-func _process(_delta):
-  if !_dead:
-    if !(GDUtil.reference_safe(target) && target.targetable()):
-      # print("projectile " + name + "(" + id + ")" + " died from target loss")
-      die()
-
-    if _current_health <= 0:
-      # print("projectile " + name + "(" + id + ")" + " died from health loss")
+    else:
       die()
 
 func _ready():
@@ -73,7 +67,5 @@ func _ready():
 
   _range_shape.radius = data.radius
 
-  _area2d.shape_owner_clear_shapes(0)
-  _area2d.shape_owner_add_shape(0, _range_shape)
   _current_health = data.health
   _dead = false

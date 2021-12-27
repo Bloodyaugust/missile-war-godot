@@ -362,7 +362,7 @@
 					"damage": 20,
 					"speed": 500,
 					"types": "rocket",
-					"radius": 1
+					"radius": 50
 				},
 				{
 					"id": "flak",

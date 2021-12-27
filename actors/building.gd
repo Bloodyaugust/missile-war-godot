@@ -10,8 +10,8 @@ onready var data:Dictionary = Castledb.get_entry("buildings", id)
 
 onready var _collider:Area2D = $"./Collider"
 onready var _building_sprite:Sprite = $"./Sprite"
-onready var _range_area2d:Area2D = $"./RangeArea2D"
 onready var _selection_indicator:ColorRect = $"./SelectionIndicator"
+onready var _tree = get_tree()
 
 var _clip_index:int
 var _clip_interval:float
@@ -57,20 +57,24 @@ func repair(amount:float) -> void:
 func targetable() -> bool:
   return !_dead
 
+func _draw():
+  if Store.state.debug:
+    draw_arc(Vector2.ZERO, data.range, 0, 2 * PI, 12, Color.red)
+
 func _find_target() -> void:
-  var _overlapping_areas:Array = _range_area2d.get_overlapping_areas()
+  var _targets:Array
 
-  for _area in _overlapping_areas:
-    var _potential_target = _area.get_owner()
-
-    match data.type:
-      "defense":
-        if _potential_target.team != team && _potential_target.is_in_group("projectiles") && GDUtil.reference_safe(_potential_target):
+  match data.type:
+    "defense":
+      _targets = _tree.get_nodes_in_group("projectiles")
+      for _potential_target in _targets:
+        if _potential_target.team != team && GDUtil.reference_safe(_potential_target) && _potential_target.targetable():
           _target = _potential_target
           return
-
-      "silo":
-        if _potential_target.team != team && _potential_target.is_in_group("buildings") && GDUtil.reference_safe(_potential_target):
+    "silo":
+      _targets = _tree.get_nodes_in_group("buildings")
+      for _potential_target in _targets:
+        if _potential_target.team != team && GDUtil.reference_safe(_potential_target) && _potential_target.targetable():
           _target = _potential_target
           return
 
@@ -81,6 +85,7 @@ func _on_collider_input_event(_viewport:Node, event:InputEvent, _shape_index:int
     Store.set_state("selection", self)
 
 func _process(delta):
+  update()
   if !_dead:
     _clip_interval = clamp(_clip_interval - delta, 0, _clip_interval)
     _current_battery = clamp(_current_battery + (data.recharge_rate * delta), 0, data.battery)
@@ -121,13 +126,6 @@ func _ready():
   _current_battery = 0
   _current_health = data.health
   _dead = false
-  if data.range > 0:
-    var _range_shape:CircleShape2D = CircleShape2D.new()
-
-    _range_shape.radius = data.range
-
-    _range_area2d.shape_owner_clear_shapes(0)
-    _range_area2d.shape_owner_add_shape(0, _range_shape)
 
   _time_to_reloaded = data.reload_time
 

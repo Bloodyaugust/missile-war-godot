@@ -8,6 +8,8 @@ func _on_store_state_changed(state_key: String, substate) -> void:
   match state_key:
     "active_team":
       _active_team_label.text = "Active Team: " + str(substate)
+    "debug":
+      visible = substate
 
 func _on_team0_pressed() -> void:
   Store.set_state("active_team", 0)
@@ -17,7 +19,7 @@ func _on_team1_pressed() -> void:
 
 func _input(event):
   if event.is_action_pressed("debug"):
-    visible = !visible
+    Store.set_state("debug", !Store.state.debug)
 
 func _ready():
   Store.connect("state_changed", self, "_on_store_state_changed")

@@ -91,22 +91,22 @@ func _update_building_screen() -> void:
   _info_description.text = _building.data.type
   _info_icon.texture = load("res://sprites/buildings/" + _building.data.id + ".png")
   _info_name.text = _building.data.id
-  _status_health.text = "Health: " + str(_building._current_health) + "/" + str(_building.data.health)
+  _status_health.text = "Health: " + str(int(round(_building._current_health))) + "/" + str(int(round(_building.data.health)))
 
   if _building.data.battery > 0:
     _status_battery.visible = true
-    _status_battery.text = "Battery: " + str(_building._current_battery) + "/" + str(_building.data.battery)
+    _status_battery.text = "Battery: " + str(int(round(_building._current_battery))) + "/" + str(int(round(_building.data.battery)))
   else:
     _status_battery.visible = false
 
   if _building.data.resource_rate_energy > 0:
     _status_energy.visible = true
-    _status_energy.text = "Energy: " + str(_building.data.resource_rate_energy) + "/min"
+    _status_energy.text = "Energy: " + str(int(round(_building.data.resource_rate_energy))) + "/min"
   else:
     _status_energy.visible = false
 
   if _building.data.resource_rate_metal > 0:
     _status_metal.visible = true
-    _status_metal.text = "Metal: " + str(_building.data.resource_rate_metal) + "/min"
+    _status_metal.text = "Metal: " + str(int(round(_building.data.resource_rate_metal))) + "/min"
   else:
     _status_metal.visible = false

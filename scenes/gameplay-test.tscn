@@ -25,7 +25,7 @@ team = 1
 
 [node name="Building7" parent="." instance=ExtResource( 4 )]
 position = Vector2( 43, -124 )
-id = "flak_1"
+id = "basic_shield"
 team = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

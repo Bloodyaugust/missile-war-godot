@@ -61,6 +61,9 @@ func _draw():
   if Store.state.debug:
     draw_arc(Vector2.ZERO, data.range, 0, 2 * PI, 12, Color.red)
 
+  if data.type == "shield":
+    draw_arc(Vector2.ZERO, data.range, 0, 2 * PI, 12, Color.blue)
+
 func _find_target() -> void:
   var _targets:Array
 
@@ -83,6 +86,18 @@ func _find_target() -> void:
 func _on_collider_input_event(_viewport:Node, event:InputEvent, _shape_index:int):
   if event is InputEventMouseButton && event.is_pressed():
     Store.set_state("selection", self)
+
+func _physics_process(_delta):
+  if data.type == "shield":
+    var _projectiles = _tree.get_nodes_in_group("projectiles")
+    var _blockable_projectiles = []
+
+    for _projectile in _projectiles:
+      if GDUtil.reference_safe(_projectile) && _projectile.team != team && _current_battery >= _projectile._current_health && _projectile.global_position.distance_to(global_position) <= data.range:
+        var _damage_done = _projectile._current_health
+
+        _projectile.damage(_damage_done)
+        _current_battery -= _damage_done
 
 func _process(delta):
   update()

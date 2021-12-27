@@ -162,9 +162,9 @@
 					"resource_rate_metal": 0,
 					"reload_time": 0,
 					"battery": 50,
-					"recharge_rate": 5,
+					"recharge_rate": 2.15,
 					"type": "shield",
-					"range": 0
+					"range": 400
 				},
 				{
 					"id": "basic_tech",

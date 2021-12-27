@@ -132,10 +132,6 @@
 					"clips": [
 						{
 							"projectile": "rocket",
-							"interval": 0.25
-						},
-						{
-							"projectile": "rocket",
 							"interval": 0
 						}
 					],
@@ -268,7 +264,7 @@
 					"battery": 0,
 					"recharge_rate": 0,
 					"type": "defense",
-					"range": 200
+					"range": 400
 				}
 			],
 			"separators": [],
@@ -362,7 +358,7 @@
 					"damage": 20,
 					"speed": 500,
 					"types": "rocket",
-					"radius": 50
+					"radius": 10
 				},
 				{
 					"id": "flak",

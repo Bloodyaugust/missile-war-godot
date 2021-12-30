@@ -93,7 +93,7 @@ func _physics_process(_delta):
     var _blockable_projectiles = []
 
     for _projectile in _projectiles:
-      if GDUtil.reference_safe(_projectile) && _projectile.team != team && _current_battery >= _projectile._current_health && _projectile.global_position.distance_to(global_position) <= data.range:
+      if GDUtil.reference_safe(_projectile) && _projectile.team != team && _current_battery >= _projectile._current_health && (_projectile.global_position.distance_to(global_position) <= data.range + 5 && _projectile.global_position.distance_to(global_position) >= data.range - 5):
         var _damage_done = _projectile._current_health
 
         _projectile.damage(_damage_done)

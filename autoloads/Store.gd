@@ -17,7 +17,7 @@ func add_player(team:int) -> void:
     "alive": true,
     "energy": 0,
     "metal": 0,
-    "techs": [],
+    "techs": {},
   })
 
 func gain_resource(resource:String, amount:float, team:int) -> void:

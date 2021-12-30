@@ -18,6 +18,9 @@ onready var _status_battery:Label = _status_container.find_node("Battery")
 onready var _status_energy:Label = _status_container.find_node("Energy")
 onready var _status_metal:Label = _status_container.find_node("Metal")
 
+onready var _upgrades_container:Control = find_node("Upgrades")
+# TODO: Populate techs and upgrades into upgrades grid, hook them up
+
 onready var _defense_buildings:GridContainer = _construction_screen.find_node("DefenseBuildings")
 onready var _resource_buildings:GridContainer = _construction_screen.find_node("ResourceBuildings")
 onready var _silo_buildings:GridContainer = _construction_screen.find_node("SiloBuildings")

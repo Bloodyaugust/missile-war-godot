@@ -2,6 +2,7 @@ extends Control
 
 const SELF_MODULATE_IDLE:Color = Color("ffffff")
 const SELF_MODULATE_SELECTED:Color = Color("fffd90")
+const MODULATE_NOT_BUILDABLE:Color = Color("474747")
 
 var data:Dictionary
 
@@ -11,7 +12,7 @@ onready var _energy:Label = find_node("Energy")
 onready var _metal:Label = find_node("Metal")
 
 func _gui_input(event):
-  if event.is_action_pressed("ui_select") || (event is InputEventMouseButton && event.button_index == BUTTON_LEFT && event.is_pressed()):
+  if (event.is_action_pressed("ui_select") || (event is InputEventMouseButton && event.button_index == BUTTON_LEFT && event.is_pressed())) && BuildingController.can_build(data.id, Store.state.active_team):
     Store.set_state("building_card_selected", self)
 
 func _on_store_state_changed(state_key: String, substate) -> void:
@@ -21,6 +22,11 @@ func _on_store_state_changed(state_key: String, substate) -> void:
         self_modulate = SELF_MODULATE_SELECTED
       else:
         self_modulate = SELF_MODULATE_IDLE
+
+  if BuildingController.can_build(data.id, Store.state.active_team):
+    modulate = SELF_MODULATE_IDLE
+  else:
+    modulate = MODULATE_NOT_BUILDABLE
 
 func _ready():
   Store.connect("state_changed", self, "_on_store_state_changed")

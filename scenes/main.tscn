@@ -53,9 +53,6 @@ tracks/1/keys = {
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-
 [node name="UIRoot" type="CanvasLayer" parent="."]
 
 [node name="MainMenu" type="MarginContainer" parent="UIRoot"]

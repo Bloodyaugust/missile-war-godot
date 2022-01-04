@@ -35,6 +35,7 @@ GameConstants="*res://constants/GameConstants.gd"
 BuildingPlacementController="*res://scripts/controllers/BuildingPlacementController.gd"
 DebugController="*res://scripts/controllers/DebugController.gd"
 BuildingController="*res://scripts/controllers/BuildingController.gd"
+MapController="*res://scripts/controllers/MapController.gd"
 
 [display]
 

@@ -3,4 +3,5 @@
 [ext_resource path="res://doodads/BuildingSprite.gd" type="Script" id=1]
 
 [node name="BuildingSprite" type="Sprite"]
+z_index = 1
 script = ExtResource( 1 )

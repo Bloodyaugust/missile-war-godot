@@ -25,7 +25,6 @@ position = Vector2( 110, -231 )
 team = 1
 
 [node name="Building7" parent="." instance=ExtResource( 4 )]
-position = Vector2( 43, -124 )
 id = "basic_shield"
 team = 1
 

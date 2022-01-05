@@ -1,0 +1,6 @@
+[gd_scene format=2]
+
+[node name="TileMap" type="TileMap"]
+cell_size = Vector2( 100, 100 )
+cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
+format = 1

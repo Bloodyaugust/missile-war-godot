@@ -1,8 +1,11 @@
 extends Node
 
 const GRID_SIZE:float = 100.0
+const grid_scene:PackedScene = preload("res://doodads/Grid.tscn")
 
 onready var _tree = get_tree()
+
+var _grid:TileMap
 
 func cell_building_allowed(position:Vector2) -> bool:
   var _buildings:Array = _tree.get_nodes_in_group("buildings")
@@ -15,28 +18,17 @@ func cell_building_allowed(position:Vector2) -> bool:
   return true
 
 func get_snapped_position(position:Vector2) -> Vector2:
-  var _possible_positions:Array = []
-  var _closest_position:Vector2
-
-  _possible_positions.append(Vector2(position.x - fmod(position.x, GRID_SIZE), position.y - fmod(position.y, GRID_SIZE)))
-  _possible_positions.append(Vector2(position.x + fmod(position.x, GRID_SIZE), position.y - fmod(position.y, GRID_SIZE)))
-  _possible_positions.append(Vector2(position.x + fmod(position.x, GRID_SIZE), position.y + fmod(position.y, GRID_SIZE)))
-  _possible_positions.append(Vector2(position.x - fmod(position.x, GRID_SIZE), position.y + fmod(position.y, GRID_SIZE)))
-  # TODO: Find closest possible grid position
-
-  _closest_position = _possible_positions[0]
-  for _possible_position in _possible_positions:
-    if _possible_position.distance_squared_to(position) < _closest_position.distance_squared_to(position):
-      _closest_position = _possible_position
-
-  return _closest_position
+  return _grid.to_global(_grid.map_to_world((_grid.world_to_map(position)))) + Vector2(GRID_SIZE / 2, GRID_SIZE / 2)
 
 func _align_scene_buildings() -> void:
   var _buildings:Array = _tree.get_nodes_in_group("buildings")
+  _grid = grid_scene.instance()
+  _grid.cell_size = Vector2(GRID_SIZE, GRID_SIZE)
+
+  _tree.get_root().add_child(_grid)
 
   for _building in _buildings:
-    _building.global_position.x = _building.global_position.x - fmod(_building.global_position.x, GRID_SIZE)
-    _building.global_position.y = _building.global_position.y - fmod(_building.global_position.y, GRID_SIZE)
+    _building.global_position = get_snapped_position(_building.global_position)
 
 func _ready():
   call_deferred("_align_scene_buildings")

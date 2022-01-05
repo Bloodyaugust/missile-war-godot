@@ -1,8 +1,5 @@
 extends Node2D
 
-const BUILDING_SPRITE_ALLOWED_MOD:Color = Color.green
-const BUILDING_SPRITE_FORBIDDEN_MOD:Color = Color.red
-
 const _building_scene:PackedScene = preload("res://actors/Building.tscn")
 const _building_sprite_scene:PackedScene = preload("res://doodads/BuildingSprite.tscn")
 
@@ -35,17 +32,6 @@ func _on_store_state_changed(state_key: String, substate) -> void:
         _building_sprite.texture = load("res://sprites/buildings/" + substate.data.id + ".png")
       else:
         _building_sprite.visible = false
-
-func _process(_delta):
-  if GDUtil.reference_safe(Store.state.building_card_selected):
-    var _mouse_position:Vector2 = _building_sprite.get_global_mouse_position()
-
-    _building_sprite.global_position = _mouse_position
-
-    if MapController.cell_building_allowed(_mouse_position):
-      _building_sprite.modulate = BUILDING_SPRITE_ALLOWED_MOD
-    else:
-      _building_sprite.modulate = BUILDING_SPRITE_FORBIDDEN_MOD
 
 func _ready():
   Store.connect("state_changed", self, "_on_store_state_changed")

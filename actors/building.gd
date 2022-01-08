@@ -71,13 +71,13 @@ func _find_target() -> void:
     "defense":
       _targets = _tree.get_nodes_in_group("projectiles")
       for _potential_target in _targets:
-        if _potential_target.team != team && GDUtil.reference_safe(_potential_target) && _potential_target.targetable():
+        if _potential_target.team != team && GDUtil.reference_safe(_potential_target) && _potential_target.targetable() && _potential_target.global_position.distance_to(global_position) <= data.range:
           _target = _potential_target
           return
     "silo":
       _targets = _tree.get_nodes_in_group("buildings")
       for _potential_target in _targets:
-        if _potential_target.team != team && GDUtil.reference_safe(_potential_target) && _potential_target.targetable():
+        if _potential_target.team != team && GDUtil.reference_safe(_potential_target) && _potential_target.targetable() && _potential_target.global_position.distance_to(global_position) <= data.range:
           _target = _potential_target
           return
 

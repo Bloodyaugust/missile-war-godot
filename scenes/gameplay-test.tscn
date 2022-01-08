@@ -24,10 +24,6 @@ id = "basic_silo"
 position = Vector2( 110, -231 )
 team = 1
 
-[node name="Building7" parent="." instance=ExtResource( 4 )]
-id = "basic_shield"
-team = 1
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="GameHUD" parent="CanvasLayer" instance=ExtResource( 2 )]

@@ -10,11 +10,11 @@ func _update_screen() -> void:
   _energy_label.text = "Energy: " + str(stepify(_player_data.energy, 0.1))
   _metal_label.text = "Metal: " + str(stepify(_player_data.metal, 0.1))
 
-  if _player_data.techs.size() > 0:
+  if _player_data.techs.keys().size() > 0:
     var _tech_list = ""
     _tech_label.visible = true
-    for _tech in _player_data.techs:
-      _tech_list += _tech.id + "\r\n"
+    for _tech in _player_data.techs.keys():
+      _tech_list += _tech + "\r\n"
     _tech_label.text = _tech_list
   else:
     _tech_label.visible = false

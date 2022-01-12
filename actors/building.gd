@@ -20,6 +20,8 @@ var _current_health:float
 var _dead:bool
 var _target:Node2D
 var _time_to_reloaded:float
+var _upgrade_time:float
+var _upgrade:Dictionary
 
 func damage(amount:float) -> void:
   _current_health = clamp(_current_health - amount, 0, data.health)
@@ -56,6 +58,21 @@ func repair(amount:float) -> void:
 
 func targetable() -> bool:
   return !_dead
+
+func upgrade(tech:Dictionary) -> void:
+  var _has_tech:bool = false
+
+  for _tech in data.techs:
+    if _tech.tech == tech.id:
+      _has_tech = true
+      break
+  
+  if !_has_tech:
+    return
+
+  if _upgrade_time <= 0 && !Store.state["player_data_" + str(team)].techs.has(tech):
+    _upgrade_time = tech.time
+    _upgrade = tech
 
 func _draw():
   if Store.state.debug:
@@ -102,32 +119,42 @@ func _physics_process(_delta):
 func _process(delta):
   update()
   if !_dead:
-    _clip_interval = clamp(_clip_interval - delta, 0, _clip_interval)
-    _current_battery = clamp(_current_battery + (data.recharge_rate * delta), 0, data.battery)
-    _time_to_reloaded = clamp(_time_to_reloaded - delta, 0, data.reload_time)
+    if _upgrade_time > 0:
+      _upgrade_time -= delta
 
-    if data.resource_rate_energy > 0:
-      emit_signal("resource_generated", "energy", delta * data.resource_rate_energy, team)
-      Store.gain_resource("energy", delta * data.resource_rate_energy, team)
-    if data.resource_rate_metal > 0:
-      emit_signal("resource_generated", "metal", delta * data.resource_rate_metal, team)
-      Store.gain_resource("metal", delta * data.resource_rate_metal, team)
+      if _upgrade_time <= 0:
+        _upgrade_time = 0
+        Store.state["player_data_" + str(team)].techs[_upgrade.id] = _upgrade
+        Store.emit_signal("state_changed", "player_data_" + str(team), Store.state["player_data_" + str(team)])
+        _upgrade = {}
 
-    match data.type:
-      "silo":
-        if GDUtil.reference_safe(_target) && _target.targetable() && _target.global_position.distance_to(global_position) <= data.range:
-          fire()
-        else:
-          _find_target()
+    else:
+      _clip_interval = clamp(_clip_interval - delta, 0, _clip_interval)
+      _current_battery = clamp(_current_battery + (data.recharge_rate * delta), 0, data.battery)
+      _time_to_reloaded = clamp(_time_to_reloaded - delta, 0, data.reload_time)
 
-      "defense":
-        if GDUtil.reference_safe(_target) && _target.targetable() && _target.global_position.distance_to(global_position) <= data.range:
-          fire()
-        else:
-          _find_target()
+      if data.resource_rate_energy > 0:
+        emit_signal("resource_generated", "energy", delta * data.resource_rate_energy, team)
+        Store.gain_resource("energy", delta * data.resource_rate_energy, team)
+      if data.resource_rate_metal > 0:
+        emit_signal("resource_generated", "metal", delta * data.resource_rate_metal, team)
+        Store.gain_resource("metal", delta * data.resource_rate_metal, team)
 
-      _:
-        pass
+      match data.type:
+        "silo":
+          if GDUtil.reference_safe(_target) && _target.targetable() && _target.global_position.distance_to(global_position) <= data.range:
+            fire()
+          else:
+            _find_target()
+
+        "defense":
+          if GDUtil.reference_safe(_target) && _target.targetable() && _target.global_position.distance_to(global_position) <= data.range:
+            fire()
+          else:
+            _find_target()
+
+        _:
+          pass
 
     if _current_health <= 0:
       die()

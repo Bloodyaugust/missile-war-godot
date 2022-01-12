@@ -1,6 +1,7 @@
 extends Control
 
 const _building_card:PackedScene = preload("res://views/components/BuildingCard.tscn")
+const _tech_card:PackedScene = preload("res://views/components/TechCard.tscn")
 
 onready var _building_screen:Control = find_node("Building")
 onready var _construction_screen:Control = find_node("Construction")
@@ -19,7 +20,12 @@ onready var _status_energy:Label = _status_container.find_node("Energy")
 onready var _status_metal:Label = _status_container.find_node("Metal")
 
 onready var _upgrades_container:Control = find_node("Upgrades")
-# TODO: Populate techs and upgrades into upgrades grid, hook them up
+onready var _tech_cards_container:Control = _upgrades_container.find_node("TechCards")
+
+onready var _upgrade_status:Control = find_node("UpgradeStatus")
+onready var _upgrade_status_icon:TextureRect = _upgrade_status.find_node("Icon")
+onready var _upgrade_status_name:Label = _upgrade_status.find_node("Name")
+onready var _upgrade_status_progress:ProgressBar = _upgrade_status.find_node("ProgressBar")
 
 onready var _defense_buildings:GridContainer = _construction_screen.find_node("DefenseBuildings")
 onready var _resource_buildings:GridContainer = _construction_screen.find_node("ResourceBuildings")
@@ -49,6 +55,7 @@ func _show_building_screen() -> void:
   _building_screen.visible = true
 
   _update_building_screen()
+  _update_building_screen_tech_cards()
 
 func _show_construction_screen() -> void:
   _building_screen.visible = false
@@ -89,7 +96,6 @@ func _ready():
       _:
         _misc_buildings.add_child(_new_building_card)
 
-
 func _update_building_screen() -> void:
   var _building:Node2D = Store.state.selection
 
@@ -98,6 +104,17 @@ func _update_building_screen() -> void:
   _info_name.text = _building.data.id
   _info_health_progress.value = clamp(lerp(0, 100, _building._current_health / _building.data.health), 0, 100)
   _status_health.text = "Health: " + str(int(round(_building._current_health))) + "/" + str(int(round(_building.data.health)))
+
+  if _building._upgrade_time > 0:
+    _upgrade_status.visible = true
+    _upgrades_container.visible = false
+
+    _upgrade_status_icon.texture = load("res://sprites/techs/" + _building._upgrade.id + ".png")
+    _upgrade_status_name.text = _building._upgrade.id
+    _upgrade_status_progress.value = 100.0 - lerp(0, 100, _building._upgrade_time / _building._upgrade.time)
+  else:
+    _upgrade_status.visible = false
+    _upgrades_container.visible = true
 
   if _building.data.type == "silo":
     _info_reload_progress.visible = true
@@ -122,3 +139,14 @@ func _update_building_screen() -> void:
     _status_metal.text = "Metal: " + str(stepify(_building.data.resource_rate_metal, 0.1)) + "/min"
   else:
     _status_metal.visible = false
+
+func _update_building_screen_tech_cards() -> void:
+  GDUtil.queue_free_children(_tech_cards_container)
+
+  for _tech in Store.state.selection.data.techs:
+    var _tech_data:Dictionary = Castledb.get_entry("techs", _tech.tech)
+    var _new_tech_card:Control = _tech_card.instance()
+
+    _new_tech_card.data = _tech_data
+
+    _tech_cards_container.add_child(_new_tech_card)

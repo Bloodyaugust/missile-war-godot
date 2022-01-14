@@ -15,20 +15,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Team0" type="Button" parent="HBoxContainer"]
-margin_right = 84.6378
-margin_bottom = 42.7363
-text = "Team 0"
-
-[node name="Team1" type="Button" parent="HBoxContainer"]
-margin_left = 94.0
-margin_right = 174.638
-margin_bottom = 42.7363
-text = "Team 1"
-
 [node name="ActiveTeam" type="Label" parent="HBoxContainer"]
-margin_left = 184.0
 margin_top = 9.0
-margin_right = 322.0
+margin_right = 138.0
 margin_bottom = 33.0
 text = "Active Team: 0"
+
+[node name="TeamButtons" type="HBoxContainer" parent="HBoxContainer"]
+margin_left = 148.0
+margin_right = 148.0
+margin_bottom = 42.0
+
+[node name="AddTeam" type="Button" parent="HBoxContainer"]
+margin_left = 158.0
+margin_right = 302.638
+margin_bottom = 42.7363
+text = "Add Team (AI)"

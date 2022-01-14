@@ -2,6 +2,8 @@ extends Node
 
 signal state_changed(state_key, substate)
 
+const AI_CONTROLLER_SCENE = preload("res://doodads/AIController.tscn")
+
 var persistent_store:PersistentStore
 var state: Dictionary = {
   "active_team": 0,
@@ -12,13 +14,21 @@ var state: Dictionary = {
   "building_card_selected": null,
  }
 
-func add_player(team:int) -> void:
+func add_player(team:int, ai:bool = false) -> void:
   set_state("player_data_" + str(team), {
     "alive": true,
+    "ai": ai,
     "energy": 0,
     "metal": 0,
     "techs": {},
   })
+
+  if ai:
+    var _new_ai := AI_CONTROLLER_SCENE.instance()
+
+    _new_ai.team = team
+
+    get_tree().get_root().add_child(_new_ai)
 
 func gain_resource(resource:String, amount:float, team:int) -> void:
   var _player_data_key:String = "player_data_" + str(team)
@@ -56,7 +66,7 @@ func _initialize():
   set_state("game", GameConstants.GAME_OVER)
   set_state("selection", null)
   add_player(0)
-  add_player(1)
+  add_player(1, true)
 
 func _ready():
   if Directory.new().file_exists(ClientConstants.CLIENT_PERSISTENT_STORE_PATH):
